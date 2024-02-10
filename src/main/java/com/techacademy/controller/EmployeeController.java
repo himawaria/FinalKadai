@@ -102,19 +102,20 @@ public class EmployeeController {
     @GetMapping(value = "{code}/update")
     public String edit(@PathVariable String code, Model model) {
 
-
+        if(code != null) {
         model.addAttribute("employee", employeeService.findByCode(code));
+        }
 
         return "employees/update";
     }
 
     // 従業員更新処理
     @PostMapping(value = "{code}/update")
-    public String update(@Validated Employee employee, BindingResult res, Model model, @PathVariable String code) {
+    public String update(@Validated Employee employee, BindingResult res, Model model) {
 
         // 入力チェック
         if (res.hasErrors()) {
-            return edit(code, model);
+            return edit(null, model);
         }
 
         employeeService.update(employee);
