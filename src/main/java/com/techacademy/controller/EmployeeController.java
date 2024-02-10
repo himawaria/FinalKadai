@@ -74,6 +74,15 @@ public class EmployeeController {
 
         }
 
+     // パスワードが空白でない場合&パスワードが8文字以上16文字以下でない場合
+        if (employee.getPassword() != null && employee.getPassword().matches("^.{8,16}$")) {
+
+        }else {
+            model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.RANGECHECK_ERROR),
+                    ErrorMessage.getErrorValue(ErrorKinds.RANGECHECK_ERROR));
+            return create(employee);
+        }
+
         // 入力チェック
         if (res.hasErrors()) {
             return create(employee);
@@ -113,18 +122,15 @@ public class EmployeeController {
     @PostMapping(value = "{code}/update")
     public String update(@Validated Employee employee, BindingResult res, Model model) {
 
-        if (!("".equals(employee.getPassword()))) {
-            // パスワードが空白でない場合
-            if (!("[0-16]{8,16}".equals(employee.getPassword()))) {
-                // パスワードが8文字以上16文字以下でない場合
+            // パスワードが空白でない場合&パスワードが8文字以上16文字以下でない場合
+            if (employee.getPassword() != null && employee.getPassword().matches("^.{8,16}$")) {
+
+            }else {
                 model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.RANGECHECK_ERROR),
                         ErrorMessage.getErrorValue(ErrorKinds.RANGECHECK_ERROR));
-
                 return edit(null, model);
-
             }
 
-        }
 
         // 入力チェック
         if (res.hasErrors()) {
