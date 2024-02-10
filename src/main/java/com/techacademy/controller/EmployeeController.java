@@ -117,7 +117,7 @@ public class EmployeeController {
             return edit(code, model);
         }
 
-        employeeService.save(employee);
+        employeeService.update(employee);
         return "redirect:/employees";
     }
 
