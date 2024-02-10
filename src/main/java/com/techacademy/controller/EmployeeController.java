@@ -113,6 +113,19 @@ public class EmployeeController {
     @PostMapping(value = "{code}/update")
     public String update(@Validated Employee employee, BindingResult res, Model model) {
 
+        if (!("".equals(employee.getPassword()))) {
+            // パスワードが空白でない場合
+            if (!("[0-16]{8,16}".equals(employee.getPassword()))) {
+                // パスワードが8文字以上16文字以下でない場合
+                model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.RANGECHECK_ERROR),
+                        ErrorMessage.getErrorValue(ErrorKinds.RANGECHECK_ERROR));
+
+                return edit(null, model);
+
+            }
+
+        }
+
         // 入力チェック
         if (res.hasErrors()) {
             return edit(null, model);
