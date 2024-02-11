@@ -13,7 +13,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
@@ -57,7 +56,6 @@ public class Employee {
 
     // パスワード
     @Column(length = 255, nullable = false)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$")
     private String password;
 
     // 削除フラグ(論理削除を行うため)

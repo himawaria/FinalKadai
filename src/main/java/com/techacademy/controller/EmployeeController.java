@@ -74,14 +74,20 @@ public class EmployeeController {
 
         }
 
-     // パスワードが空白でない場合&パスワードが8文字以上16文字以下でない場合
-        if (employee.getPassword() != null && employee.getPassword().matches("^.{8,16}$")) {
-
-        }else {
+        // パスワードが空白でない場合かつパスワードが8文字以上16文字以下でない場合
+        if (employee.getPassword() != "" && !employee.getPassword().matches("^.{8,16}$")) {
             model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.RANGECHECK_ERROR),
                     ErrorMessage.getErrorValue(ErrorKinds.RANGECHECK_ERROR));
             return create(employee);
         }
+
+        // パスワードが空白でない場合かつパスワードが半角英数字でない場合
+        if (employee.getPassword() != "" && !employee.getPassword().matches("^[a-zA-Z0-9]*$")) {
+            model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.HALFSIZE_ERROR),
+                    ErrorMessage.getErrorValue(ErrorKinds.HALFSIZE_ERROR));
+            return create(employee);
+        }
+
 
         // 入力チェック
         if (res.hasErrors()) {
@@ -122,14 +128,19 @@ public class EmployeeController {
     @PostMapping(value = "{code}/update")
     public String update(@Validated Employee employee, BindingResult res, Model model) {
 
-            // パスワードが空白でない場合&パスワードが8文字以上16文字以下でない場合
-            if (employee.getPassword() != null && employee.getPassword().matches("^.{8,16}$")) {
+        // パスワードが空白でない場合かつパスワードが8文字以上16文字以下でない場合
+        if (employee.getPassword() != "" && !employee.getPassword().matches("^.{8,16}$")) {
+            model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.RANGECHECK_ERROR),
+                    ErrorMessage.getErrorValue(ErrorKinds.RANGECHECK_ERROR));
+            return edit(null, model);
+        }
 
-            }else {
-                model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.RANGECHECK_ERROR),
-                        ErrorMessage.getErrorValue(ErrorKinds.RANGECHECK_ERROR));
-                return edit(null, model);
-            }
+        // パスワードが空白でない場合かつパスワードが半角英数字でない場合
+        if (employee.getPassword() != "" && !employee.getPassword().matches("^[a-zA-Z0-9]*$")) {
+            model.addAttribute(ErrorMessage.getErrorName(ErrorKinds.HALFSIZE_ERROR),
+                    ErrorMessage.getErrorValue(ErrorKinds.HALFSIZE_ERROR));
+            return edit(null, model);
+        }
 
 
         // 入力チェック

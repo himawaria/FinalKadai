@@ -56,10 +56,21 @@ public class EmployeeService {
     @Transactional
     public ErrorKinds update(Employee employee) {
 
+        if (!employee.getPassword().isEmpty()) {
+            // 暗号化
+            employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        } else {
+            // パスワードが空の場合はデータベースに設定済みの値を取得して設定
+            Employee existingEmployee = this.findByCode(employee.getCode());
+            employee.setPassword(existingEmployee.getPassword());
+        }
+
+        Employee existingEmployee = this.findByCode(employee.getCode());
+        employee.setCreatedAt(existingEmployee.getCreatedAt());
+
         employee.setDeleteFlg(false);
 
         LocalDateTime now = LocalDateTime.now();
-        employee.setCreatedAt(now);
         employee.setUpdatedAt(now);
 
         employeeRepository.save(employee);
