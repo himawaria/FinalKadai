@@ -59,6 +59,11 @@ public class EmployeeService {
         if (!employee.getPassword().isEmpty()) {
             // 暗号化
             employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+            // パスワードチェック
+            ErrorKinds result = employeePasswordCheck(employee);
+            if (ErrorKinds.CHECK_OK != result) {
+                return result;
+            }
         } else {
             // パスワードが空の場合はデータベースに設定済みの値を取得して設定
             Employee existingEmployee = this.findByCode(employee.getCode());
