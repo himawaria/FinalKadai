@@ -57,8 +57,6 @@ public class EmployeeService {
     public ErrorKinds update(Employee employee) {
 
         if (!employee.getPassword().isEmpty()) {
-            // 暗号化
-            employee.setPassword(passwordEncoder.encode(employee.getPassword()));
             // パスワードチェック
             ErrorKinds result = employeePasswordCheck(employee);
             if (ErrorKinds.CHECK_OK != result) {
