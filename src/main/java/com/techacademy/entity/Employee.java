@@ -1,8 +1,9 @@
-
 package com.techacademy.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Data
@@ -69,5 +71,13 @@ public class Employee {
     // 更新日時
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    // 追加: employee_code
+    @Column(name = "employee_code") // マッピング対象のカラム名を指定
+    private String employeeCode; // プロパティを追加
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Report> reportList;
+
 
 }
