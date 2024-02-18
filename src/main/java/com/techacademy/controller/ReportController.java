@@ -85,7 +85,6 @@ public class ReportController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         if (userDetails instanceof UserDetail) {
             Employee employee = ((UserDetail) userDetails).getEmployee();
-            report.setId(Long.parseLong(employee.getCode()));
             model.addAttribute("loggedInUserName", employee.getName());
         }
 
@@ -99,7 +98,7 @@ public class ReportController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         if (userDetails instanceof UserDetail) {
             Employee employee = ((UserDetail) userDetails).getEmployee();
-            report.setId(Long.parseLong(employee.getCode()));
+            report.setEmployee(employee);
             model.addAttribute("loggedInUserName", employee.getName());
         }
 
@@ -147,6 +146,13 @@ public class ReportController {
     // 日報更新処理
     @PostMapping(value = "{id}/update")
     public String update(@Validated Report report, BindingResult res, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        if (userDetails instanceof UserDetail) {
+            Employee employee = ((UserDetail) userDetails).getEmployee();
+            report.setEmployee(employee);
+            model.addAttribute("loggedInUserName", employee.getName());
+        }
 
         // 入力チェック
         if (res.hasErrors()) {
